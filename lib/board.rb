@@ -22,8 +22,22 @@ end
 # board class
 class Board
   include BoardTemplate
+
+  def initialize
+    @movements = Array.new(6) { Array.new(7, nil) }
+  end
+
   def draw_board
-    generate_board
+    board_temp = generate_board
+    # @movements.each do |x|
+    # x.each do |y|
+    (0..@movements.length - 1).each do |y|
+      (0..@movements[y].length - 1).each do |x|
+        tmpval = @movements[y][x]
+        board_temp[2 * y + 1][2 * x + 1] = tmpval if tmpval
+      end
+    end
+    board_temp
   end
 end
 

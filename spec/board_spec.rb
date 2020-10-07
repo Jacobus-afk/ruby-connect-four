@@ -19,7 +19,18 @@ describe Board do
     end
 
     it 'draws board with moves on it correctly' do
-        @board.instance_variable_set()
+      dummy_movements = Array.new(6) { Array.new(7, nil) }
+      dummy_movements[0][0] = 'R'
+      dummy_movements[4][3] = 'B'
+      @board.instance_variable_set(:@movements, dummy_movements)
+      expect(@board.draw_board).to eql(['┌─┬─┬─┬─┬─┬─┬─┐',
+                                        '│R│ │ │ │ │ │ │', '├─┼─┼─┼─┼─┼─┼─┤',
+                                        '│ │ │ │ │ │ │ │', '├─┼─┼─┼─┼─┼─┼─┤',
+                                        '│ │ │ │ │ │ │ │', '├─┼─┼─┼─┼─┼─┼─┤',
+                                        '│ │ │ │ │ │ │ │', '├─┼─┼─┼─┼─┼─┼─┤',
+                                        '│ │ │ │B│ │ │ │', '├─┼─┼─┼─┼─┼─┼─┤',
+                                        '│ │ │ │ │ │ │ │',
+                                        '└─┴─┴─┴─┴─┴─┴─┘'])
     end
   end
 end
