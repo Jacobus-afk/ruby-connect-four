@@ -40,19 +40,26 @@ class Board
 
   def initialize
     @movements = Array.new(6) { Array.new(7, nil) }
+    @current_board = generate_board
   end
 
   def draw_board
-    board_temp = generate_board
+    # @current_board = generate_board
     # @movements.each do |x|
     # x.each do |y|
     (0..@movements.length - 1).each do |y|
       (0..@movements[y].length - 1).each do |x|
-        tmpval = color_output(@movements[y][x])
-        board_temp[2 * y + 1][2 * x + 1] = tmpval if tmpval
+        _plot_movement(y, x)
       end
     end
-    board_temp
+    @current_board
+  end
+
+  private
+
+  def _plot_movement(pt_y, pt_x)
+    tmpval = color_output(@movements[pt_y][pt_x])
+    @current_board[2 * pt_y + 1][2 * pt_x + 1] = tmpval if tmpval
   end
 end
 

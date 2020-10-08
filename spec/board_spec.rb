@@ -18,7 +18,7 @@ describe Board do
                                         '└─┴─┴─┴─┴─┴─┴─┘'])
     end
 
-    it 'draws board with moves on it correctly' do
+    it 'draws board with colored moves on it correctly' do
       dummy_movements = Array.new(6) { Array.new(7, nil) }
       dummy_movements[0][0] = 'R'
       dummy_movements[4][3] = 'B'
@@ -32,5 +32,9 @@ describe Board do
                                         '│ │ │ │ │ │ │ │',
                                         '└─┴─┴─┴─┴─┴─┴─┘'])
     end
+  end
+
+  context '#play_move' do
+
   end
 end
