@@ -1,11 +1,16 @@
 # frozen_string_literal: true
 
+require './lib/colors.rb'
+
 # template used to draw connect4 board
 module BoardTemplate
-  TOP_STRUCTURE =    '┌─┬─┬─┬─┬─┬─┬─┐'
-  MIDDLE_PLAYABLE =  '│ │ │ │ │ │ │ │'
+  TOP_STRUCTURE = '┌─┬─┬─┬─┬─┬─┬─┐'
+  MIDDLE_PLAYABLE = '│ │ │ │ │ │ │ │'
   MIDDLE_STRUCTURE = '├─┼─┼─┼─┼─┼─┼─┤'
   BOTTOM_STRUCTURE = '└─┴─┴─┴─┴─┴─┴─┘'
+
+  COLOR_LETTERS = %w[R G Y B P C].freeze
+  COLOR_METHODS = %i[red green yellow blue pink cyan black white].freeze
 
   def generate_board
     [TOP_STRUCTURE.dup,
@@ -16,6 +21,16 @@ module BoardTemplate
      MIDDLE_PLAYABLE.dup, MIDDLE_STRUCTURE.dup,
      MIDDLE_PLAYABLE.dup,
      BOTTOM_STRUCTURE.dup]
+  end
+
+  def color_output(char)
+    _find_color_method(COLOR_LETTERS.find_index(char))
+  end
+
+  def _find_color_method(color_idx)
+    return nil if color_idx.nil? || !color_idx.between?(0, COLOR_METHODS.length - 1)
+
+    '█'.send(COLOR_METHODS[color_idx])
   end
 end
 
@@ -33,7 +48,7 @@ class Board
     # x.each do |y|
     (0..@movements.length - 1).each do |y|
       (0..@movements[y].length - 1).each do |x|
-        tmpval = @movements[y][x]
+        tmpval = color_output(@movements[y][x])
         board_temp[2 * y + 1][2 * x + 1] = tmpval if tmpval
       end
     end
