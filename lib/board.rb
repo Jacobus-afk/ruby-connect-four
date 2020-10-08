@@ -12,6 +12,8 @@ module BoardTemplate
   COLOR_LETTERS = %w[R G Y B P C].freeze
   COLOR_METHODS = %i[red green yellow blue pink cyan black white].freeze
 
+  VALID_SYMBOLS = %w[R B].freeze
+
   def generate_board
     [TOP_STRUCTURE.dup,
      MIDDLE_PLAYABLE.dup, MIDDLE_STRUCTURE.dup,
@@ -39,20 +41,25 @@ class Board
   include BoardTemplate
 
   def initialize
+    # @movements is a 2d matrix of movements on board with coords[y][x]
     @movements = Array.new(6) { Array.new(7, nil) }
     @current_board = generate_board
   end
 
   def draw_board
-    # @current_board = generate_board
-    # @movements.each do |x|
-    # x.each do |y|
     (0..@movements.length - 1).each do |y|
       (0..@movements[y].length - 1).each do |x|
         _plot_movement(y, x)
       end
     end
     @current_board
+  end
+
+  def play_move(column, symbol, row = 0)
+    row += 1 while row < @movements.length && @movements[row][column].nil?
+
+    @movements[row - 1][column] = symbol
+    # return symbol if @movements[row][column]
   end
 
   private
