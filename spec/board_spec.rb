@@ -43,19 +43,11 @@ describe Board do
       current_movements = @board.instance_variable_get(:@movements)
       row = current_movements.length - 1
       expect(current_movements[row][column]).to eql('R')
-      # expect(@board.draw_board).to eql(['┌─┬─┬─┬─┬─┬─┬─┐',
-      #                                   '│ │ │ │ │ │ │ │', '├─┼─┼─┼─┼─┼─┼─┤',
-      #                                   '│ │ │ │ │ │ │ │', '├─┼─┼─┼─┼─┼─┼─┤',
-      #                                   '│ │ │ │ │ │ │ │', '├─┼─┼─┼─┼─┼─┼─┤',
-      #                                   '│ │ │ │ │ │ │ │', '├─┼─┼─┼─┼─┼─┼─┤',
-      #                                   '│ │ │ │ │ │ │ │', '├─┼─┼─┼─┼─┼─┼─┤',
-      #                                   "│ │\e[1;31m█\e[0m│ │ │ │ │ │",
-      #                                   '└─┴─┴─┴─┴─┴─┴─┘'])
     end
 
     it 'adds moves on top of previous moves in same column' do
       column = 2
-      # dummy_movements = Array.new(6) { Array.new(7, nil) }
+
       @dummy_movements[5][column] = 'B'
       @dummy_movements[4][column] = 'R'
       @board.instance_variable_set(:@movements, @dummy_movements)
@@ -63,19 +55,11 @@ describe Board do
       @board.play_move(column, 'B')
       @board.play_move(column, 'R')
       current_movements = @board.instance_variable_get(:@movements)
-      # row = current_movements.length - 1
+
       expect(current_movements[5][column]).to eql('B')
       expect(current_movements[4][column]).to eql('R')
       expect(current_movements[3][column]).to eql('B')
       expect(current_movements[2][column]).to eql('R')
-      # expect(@board.draw_board).to eql(['┌─┬─┬─┬─┬─┬─┬─┐',
-      #                                   '│ │ │ │ │ │ │ │', '├─┼─┼─┼─┼─┼─┼─┤',
-      #                                   '│ │ │ │ │ │ │ │', '├─┼─┼─┼─┼─┼─┼─┤',
-      #                                   '│ │ │ │ │ │ │ │', '├─┼─┼─┼─┼─┼─┼─┤',
-      #                                   "│ │ │\e[1;34m█\e[0m│ │ │ │ │", '├─┼─┼─┼─┼─┼─┼─┤',
-      #                                   "│ │ │\e[1;31m█\e[0m│ │ │ │ │", '├─┼─┼─┼─┼─┼─┼─┤',
-      #                                   "│ │ │\e[1;34m█\e[0m│ │ │ │ │",
-      #                                   '└─┴─┴─┴─┴─┴─┴─┘'])
     end
 
     it 'checks if valid symbol is played' do
@@ -102,7 +86,6 @@ describe Board do
       @board.instance_variable_set(:@movements, @dummy_movements)
 
       expect(@board.play_move(column, symbol)).to eql false
-      # dummy_movements = Array.new(6) { Array.new(7, nil) }
     end
   end
 end
