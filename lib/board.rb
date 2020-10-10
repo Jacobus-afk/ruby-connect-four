@@ -116,18 +116,12 @@ class Board
   end
 
   def _plot_movement(pt_y, pt_x)
-    # tmpval = color_output(@movements[pt_y][pt_x])
     tmpval = @movements[pt_y][pt_x]
     @current_board[2 * pt_y + 1][2 * pt_x + 1] = tmpval unless tmpval.nil?
   end
 
   def _add_color_to_board
     @current_board.map do |row|
-      # if VALID_SYMBOLS.any? { |symbol| row.include?(symbol) }
-      #   row.gsub('B', color_output('B')).gsub('R', color_output('R'))
-      # else
-      #   row
-      # end
       row.gsub('B', color_output('B')).gsub('R', color_output('R'))
     end
   end
