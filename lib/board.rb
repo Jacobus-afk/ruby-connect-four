@@ -44,6 +44,7 @@ class Board
     # @movements is a 2d matrix of movements on board with coords[y][x]
     @movements = Array.new(6) { Array.new(7, nil) }
     @current_board = generate_board
+    # @plots = []
   end
 
   def draw_board
@@ -52,7 +53,8 @@ class Board
         _plot_movement(y, x)
       end
     end
-    @current_board
+    # @current_board
+    _add_color_to_board
   end
 
   def play_move(column, symbol, row = 0)
@@ -67,8 +69,8 @@ class Board
   end
 
   def check_for_win(symbol)
-    (0..2).each do |y|
-      (0..3).each do |x|
+    (0..@movements.length - 1).each do |y|
+      (0..@movements[y].length - 1).each do |x|
         next unless @movements[y][x] == symbol
 
         return true if _check_horizontal_win(y, x)
@@ -84,6 +86,8 @@ class Board
   private
 
   def _check_horizontal_win(pt_y, pt_x)
+    return false if pt_x > 3
+
     horizontal_arr = [@movements[pt_y][pt_x],
                       @movements[pt_y][pt_x + 1],
                       @movements[pt_y][pt_x + 2],
@@ -92,7 +96,13 @@ class Board
   end
 
   def _check_vertical_win(pt_y, pt_x)
-    # puts
+    return false if pt_y > 2
+
+    vertical_arr = [@movements[pt_y][pt_x],
+                    @movements[pt_y + 1][pt_x],
+                    @movements[pt_y + 2][pt_x],
+                    @movements[pt_y + 3][pt_x]]
+    vertical_arr.uniq.size == 1
   end
 
   def _check_diagonal_win(pt_y, pt_x)
@@ -100,14 +110,29 @@ class Board
   end
 
   def _plot_movement(pt_y, pt_x)
-    tmpval = color_output(@movements[pt_y][pt_x])
-    @current_board[2 * pt_y + 1][2 * pt_x + 1] = tmpval if tmpval
+    # tmpval = color_output(@movements[pt_y][pt_x])
+    tmpval = @movements[pt_y][pt_x]
+    @current_board[2 * pt_y + 1][2 * pt_x + 1] = tmpval unless tmpval.nil?
+  end
+
+  def _add_color_to_board
+    @current_board.map do |row|
+      # if VALID_SYMBOLS.any? { |symbol| row.include?(symbol) }
+      #   row.gsub('B', color_output('B')).gsub('R', color_output('R'))
+      # else
+      #   row
+      # end
+      row.gsub('B', color_output('B')).gsub('R', color_output('R'))
+    end
   end
 end
 
 if __FILE__ == $PROGRAM_NAME
   board = Board.new
+  board.play_move(5, 'R')
+  board.play_move(5, 'R')
+  board.play_move(0, 'B')
   canvas = board.draw_board
-  board.play_move(1, 'R')
   puts canvas
+  board.check_for_win('R')
 end

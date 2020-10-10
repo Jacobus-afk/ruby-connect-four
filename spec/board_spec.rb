@@ -22,13 +22,14 @@ describe Board do
     it 'draws board with colored moves on it correctly' do
       @dummy_movements[0][0] = 'R'
       @dummy_movements[4][3] = 'B'
+      @dummy_movements[4][0] = 'B'
       @board.instance_variable_set(:@movements, @dummy_movements)
       expect(@board.draw_board).to eql(['┌─┬─┬─┬─┬─┬─┬─┐',
                                         "│\e[1;31m█\e[0m│ │ │ │ │ │ │", '├─┼─┼─┼─┼─┼─┼─┤',
                                         '│ │ │ │ │ │ │ │', '├─┼─┼─┼─┼─┼─┼─┤',
                                         '│ │ │ │ │ │ │ │', '├─┼─┼─┼─┼─┼─┼─┤',
                                         '│ │ │ │ │ │ │ │', '├─┼─┼─┼─┼─┼─┼─┤',
-                                        "│ │ │ │\e[1;34m█\e[0m│ │ │ │", '├─┼─┼─┼─┼─┼─┼─┤',
+                                        "│\e[1;34m█\e[0m│ │ │\e[1;34m█\e[0m│ │ │ │", '├─┼─┼─┼─┼─┼─┼─┤',
                                         '│ │ │ │ │ │ │ │',
                                         '└─┴─┴─┴─┴─┴─┴─┘'])
     end
@@ -89,17 +90,17 @@ describe Board do
   end
 
   context 'check_for_win' do
-    it 'checks for a horizontal win' do
-      symbol = 'R'
-      row = 2
-      @dummy_movements[row][3] = symbol
-      @dummy_movements[row][4] = symbol
-      @dummy_movements[row][5] = symbol
-      @dummy_movements[row][6] = symbol
+    it 'returns true on a horizontal win' do
+      row = 5
+      @dummy_movements[row][3] = 'R'
+      @dummy_movements[row][4] = 'R'
+      @dummy_movements[row][5] = 'R'
+      @dummy_movements[row][6] = 'R'
       @board.instance_variable_set(:@movements, @dummy_movements)
 
-      expect(@board.check_for_win(symbol)).to eql true
+      expect(@board.check_for_win('R')).to eql true
     end
+
     it 'returns false on a horizontal non-win' do
       row = 0
       @dummy_movements[row][0] = 'B'
@@ -109,6 +110,31 @@ describe Board do
       @dummy_movements[row][4] = 'R'
       @dummy_movements[row][5] = 'R'
       @dummy_movements[row][6] = 'B'
+      @board.instance_variable_set(:@movements, @dummy_movements)
+
+      expect(@board.check_for_win('R')).to eql false
+      expect(@board.check_for_win('B')).to eql false
+    end
+
+    it 'returns true on a vertical win' do
+      column = 6
+      @dummy_movements[2][column] = 'B'
+      @dummy_movements[3][column] = 'B'
+      @dummy_movements[4][column] = 'B'
+      @dummy_movements[5][column] = 'B'
+      @board.instance_variable_set(:@movements, @dummy_movements)
+
+      expect(@board.check_for_win('B')).to eql true
+    end
+
+    it 'returns false on a vertical non-win' do
+      column = 0
+      @dummy_movements[0][column] = 'B'
+      @dummy_movements[1][column] = 'B'
+      @dummy_movements[2][column] = 'B'
+      @dummy_movements[3][column] = 'R'
+      @dummy_movements[4][column] = 'R'
+      @dummy_movements[5][column] = 'R'
       @board.instance_variable_set(:@movements, @dummy_movements)
 
       expect(@board.check_for_win('R')).to eql false
