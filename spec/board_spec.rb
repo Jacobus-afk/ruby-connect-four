@@ -140,5 +140,28 @@ describe Board do
       expect(@board.check_for_win('R')).to eql false
       expect(@board.check_for_win('B')).to eql false
     end
+
+    it 'returns true on a diagonal win' do
+      @dummy_movements[2][3] = 'R'
+      @dummy_movements[3][4] = 'R'
+      @dummy_movements[4][5] = 'R'
+      @dummy_movements[5][6] = 'R'
+      @board.instance_variable_set(:@movements, @dummy_movements)
+
+      expect(@board.check_for_win('R')).to eql true
+    end
+
+    it 'returns false on a diagonal non-win' do
+      @dummy_movements[0][0] = 'B'
+      @dummy_movements[1][1] = 'B'
+      @dummy_movements[2][2] = 'B'
+      @dummy_movements[3][3] = 'R'
+      @dummy_movements[4][4] = 'R'
+      @dummy_movements[5][5] = 'R'
+      @board.instance_variable_set(:@movements, @dummy_movements)
+
+      expect(@board.check_for_win('R')).to eql false
+      expect(@board.check_for_win('B')).to eql false
+    end
   end
 end

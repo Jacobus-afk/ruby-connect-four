@@ -106,7 +106,13 @@ class Board
   end
 
   def _check_diagonal_win(pt_y, pt_x)
-    # puts
+    return false if pt_y > 2 || pt_x > 3
+
+    diagonal_arr = [@movements[pt_y][pt_x],
+                    @movements[pt_y + 1][pt_x + 1],
+                    @movements[pt_y + 2][pt_x + 2],
+                    @movements[pt_y + 3][pt_x + 3]]
+    diagonal_arr.uniq.size == 1
   end
 
   def _plot_movement(pt_y, pt_x)
