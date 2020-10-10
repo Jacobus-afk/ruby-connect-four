@@ -66,7 +66,38 @@ class Board
     # return symbol if @movements[row][column]
   end
 
+  def check_for_win(symbol)
+    (0..2).each do |y|
+      (0..3).each do |x|
+        next unless @movements[y][x] == symbol
+
+        return true if _check_horizontal_win(y, x)
+
+        return true if _check_vertical_win(y, x)
+
+        return true if _check_diagonal_win(y, x)
+      end
+    end
+    false
+  end
+
   private
+
+  def _check_horizontal_win(pt_y, pt_x)
+    horizontal_arr = [@movements[pt_y][pt_x],
+                      @movements[pt_y][pt_x + 1],
+                      @movements[pt_y][pt_x + 2],
+                      @movements[pt_y][pt_x + 3]]
+    horizontal_arr.uniq.size == 1
+  end
+
+  def _check_vertical_win(pt_y, pt_x)
+    # puts
+  end
+
+  def _check_diagonal_win(pt_y, pt_x)
+    # puts
+  end
 
   def _plot_movement(pt_y, pt_x)
     tmpval = color_output(@movements[pt_y][pt_x])

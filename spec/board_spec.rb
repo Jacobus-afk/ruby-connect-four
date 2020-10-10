@@ -20,7 +20,6 @@ describe Board do
     end
 
     it 'draws board with colored moves on it correctly' do
-      # dummy_movements = Array.new(6) { Array.new(7, nil) }
       @dummy_movements[0][0] = 'R'
       @dummy_movements[4][3] = 'B'
       @board.instance_variable_set(:@movements, @dummy_movements)
@@ -86,6 +85,34 @@ describe Board do
       @board.instance_variable_set(:@movements, @dummy_movements)
 
       expect(@board.play_move(column, symbol)).to eql false
+    end
+  end
+
+  context 'check_for_win' do
+    it 'checks for a horizontal win' do
+      symbol = 'R'
+      row = 2
+      @dummy_movements[row][3] = symbol
+      @dummy_movements[row][4] = symbol
+      @dummy_movements[row][5] = symbol
+      @dummy_movements[row][6] = symbol
+      @board.instance_variable_set(:@movements, @dummy_movements)
+
+      expect(@board.check_for_win(symbol)).to eql true
+    end
+    it 'returns false on a horizontal non-win' do
+      row = 0
+      @dummy_movements[row][0] = 'B'
+      @dummy_movements[row][1] = 'B'
+      @dummy_movements[row][2] = 'B'
+      @dummy_movements[row][3] = 'R'
+      @dummy_movements[row][4] = 'R'
+      @dummy_movements[row][5] = 'R'
+      @dummy_movements[row][6] = 'B'
+      @board.instance_variable_set(:@movements, @dummy_movements)
+
+      expect(@board.check_for_win('R')).to eql false
+      expect(@board.check_for_win('B')).to eql false
     end
   end
 end
