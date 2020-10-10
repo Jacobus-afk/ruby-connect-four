@@ -56,6 +56,10 @@ class Board
   end
 
   def play_move(column, symbol, row = 0)
+    unless @movements[row][column].nil? && VALID_SYMBOLS.include?(symbol) && column.between?(0, @movements.length - 1)
+      return false
+    end
+
     row += 1 while row < @movements.length && @movements[row][column].nil?
 
     @movements[row - 1][column] = symbol
@@ -73,5 +77,6 @@ end
 if __FILE__ == $PROGRAM_NAME
   board = Board.new
   canvas = board.draw_board
+  board.play_move(1, 'R')
   puts canvas
 end
