@@ -22,7 +22,7 @@ module BoardTemplate
      MIDDLE_PLAYABLE.dup, MIDDLE_STRUCTURE.dup,
      MIDDLE_PLAYABLE.dup, MIDDLE_STRUCTURE.dup,
      MIDDLE_PLAYABLE.dup,
-     BOTTOM_STRUCTURE.dup]
+     BOTTOM_STRUCTURE.dup, ' 1 2 3 4 5 6 7']
   end
 
   def color_output(char)
@@ -44,7 +44,6 @@ class Board
     # @movements is a 2d matrix of movements on board with coords[y][x]
     @movements = Array.new(6) { Array.new(7, nil) }
     @current_board = generate_board
-    # @plots = []
   end
 
   def draw_board
@@ -53,19 +52,21 @@ class Board
         _plot_movement(y, x)
       end
     end
-    # @current_board
     _add_color_to_board
   end
 
   def play_move(column, symbol, row = 0)
-    unless @movements[row][column].nil? && VALID_SYMBOLS.include?(symbol) && column.between?(0, @movements.length - 1)
+    unless @movements[row][column].nil? && VALID_SYMBOLS.include?(symbol) && column.between?(0, @movements.length)
       return false
     end
 
     row += 1 while row < @movements.length && @movements[row][column].nil?
 
     @movements[row - 1][column] = symbol
-    # return symbol if @movements[row][column]
+  end
+
+  def check_for_full_board
+    @movements[0].count(nil).zero?
   end
 
   def check_for_win(symbol)

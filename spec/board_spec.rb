@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/BlockLength
+
 require './lib/board'
 
 describe Board do
@@ -7,7 +9,7 @@ describe Board do
     @board = Board.new
     @dummy_movements = Array.new(6) { Array.new(7, nil) }
   end
-  context '#draw_board' do
+  describe '#draw_board' do
     it 'draws template correcty' do
       expect(@board.draw_board).to eql(['┌─┬─┬─┬─┬─┬─┬─┐',
                                         '│ │ │ │ │ │ │ │', '├─┼─┼─┼─┼─┼─┼─┤',
@@ -35,7 +37,7 @@ describe Board do
     end
   end
 
-  context '#play_move' do
+  describe '#play_move' do
     it 'adds a move to movement in correct column and shifts down to bottom row' do
       column = 1
       symbol = 'R'
@@ -89,7 +91,37 @@ describe Board do
     end
   end
 
-  context 'check_for_win' do
+  describe '#check_for_full_board' do
+    it 'returns true when no more moves can be made on a board' do
+      row = 0
+      @dummy_movements[row][0] = 'B'
+      @dummy_movements[row][1] = 'B'
+      @dummy_movements[row][2] = 'B'
+      @dummy_movements[row][3] = 'R'
+      @dummy_movements[row][4] = 'R'
+      @dummy_movements[row][5] = 'R'
+      @dummy_movements[row][6] = 'B'
+      @board.instance_variable_set(:@movements, @dummy_movements)
+
+      expect(@board.check_for_full_board).to eql true
+    end
+
+    it 'returns false when more moves can be made on a board' do
+      row = 1
+      @dummy_movements[row][0] = 'B'
+      @dummy_movements[row][1] = 'B'
+      @dummy_movements[row][2] = 'B'
+      @dummy_movements[row][3] = 'R'
+      @dummy_movements[row][4] = 'R'
+      @dummy_movements[row][5] = 'R'
+      @dummy_movements[row][6] = 'B'
+      @board.instance_variable_set(:@movements, @dummy_movements)
+
+      expect(@board.check_for_full_board).to eql false
+    end
+  end
+
+  describe '#check_for_win' do
     it 'returns true on a horizontal win' do
       row = 5
       @dummy_movements[row][3] = 'R'
@@ -165,3 +197,5 @@ describe Board do
     end
   end
 end
+
+# rubocop:enable Metrics/BlockLength
