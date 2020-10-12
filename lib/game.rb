@@ -36,6 +36,9 @@ class Game
       player = player_enumerator.next
       play_round(player.symbol, player.name)
     end
+    puts 'Game over'
+    puts 'Board is full' if @board_full
+    puts "#{player.name} won"
   end
 
   private

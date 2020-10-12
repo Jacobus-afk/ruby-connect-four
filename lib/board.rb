@@ -74,17 +74,23 @@ class Board
       (0..@movements[y].length - 1).each do |x|
         next unless @movements[y][x] == symbol
 
-        return true if _check_horizontal_win(y, x)
-
-        return true if _check_vertical_win(y, x)
-
-        return true if _check_diagonal_win(y, x)
+        return true if _check_win(y, x)
       end
     end
     false
   end
 
   private
+
+  def _check_win(pt_y, pt_x)
+    return true if _check_horizontal_win(pt_y, pt_x)
+
+    return true if _check_vertical_win(pt_y, pt_x)
+
+    return true if _check_diagonal_win(pt_y, pt_x)
+
+    return true if _check_reverse_diagonal_win(pt_y, pt_x)
+  end
 
   def _check_horizontal_win(pt_y, pt_x)
     return false if pt_x > 3
@@ -113,6 +119,16 @@ class Board
                     @movements[pt_y + 1][pt_x + 1],
                     @movements[pt_y + 2][pt_x + 2],
                     @movements[pt_y + 3][pt_x + 3]]
+    diagonal_arr.uniq.size == 1
+  end
+
+  def _check_reverse_diagonal_win(pt_y, pt_x)
+    return false if pt_y > 2 || pt_x < 3
+
+    diagonal_arr = [@movements[pt_y][pt_x],
+                    @movements[pt_y + 1][pt_x - 1],
+                    @movements[pt_y + 2][pt_x - 2],
+                    @movements[pt_y + 3][pt_x - 3]]
     diagonal_arr.uniq.size == 1
   end
 

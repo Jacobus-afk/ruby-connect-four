@@ -18,7 +18,7 @@ describe Board do
                                         '│ │ │ │ │ │ │ │', '├─┼─┼─┼─┼─┼─┼─┤',
                                         '│ │ │ │ │ │ │ │', '├─┼─┼─┼─┼─┼─┼─┤',
                                         '│ │ │ │ │ │ │ │',
-                                        '└─┴─┴─┴─┴─┴─┴─┘'])
+                                        '└─┴─┴─┴─┴─┴─┴─┘', ' 1 2 3 4 5 6 7'])
     end
 
     it 'draws board with colored moves on it correctly' do
@@ -33,7 +33,7 @@ describe Board do
                                         '│ │ │ │ │ │ │ │', '├─┼─┼─┼─┼─┼─┼─┤',
                                         "│\e[1;34m█\e[0m│ │ │\e[1;34m█\e[0m│ │ │ │", '├─┼─┼─┼─┼─┼─┼─┤',
                                         '│ │ │ │ │ │ │ │',
-                                        '└─┴─┴─┴─┴─┴─┴─┘'])
+                                        '└─┴─┴─┴─┴─┴─┴─┘', ' 1 2 3 4 5 6 7'])
     end
   end
 
@@ -171,6 +171,16 @@ describe Board do
 
       expect(@board.check_for_win('R')).to eql false
       expect(@board.check_for_win('B')).to eql false
+    end
+
+    it 'returns true on a reverse diagonal win' do
+      @dummy_movements[2][6] = 'R'
+      @dummy_movements[3][5] = 'R'
+      @dummy_movements[4][4] = 'R'
+      @dummy_movements[5][3] = 'R'
+      @board.instance_variable_set(:@movements, @dummy_movements)
+
+      expect(@board.check_for_win('R')).to eql true
     end
 
     it 'returns true on a diagonal win' do
