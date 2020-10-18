@@ -32,16 +32,21 @@ class Game
 
   def start_game
     player_enumerator = @players.cycle
-    until @won || @board_full
+    loop do
       player = player_enumerator.next
       play_round(player.symbol, player.name)
+      break if _game_complete
     end
     puts 'Game over'
     puts 'Board is full' if @board_full
-    puts "#{player.name} won"
+    puts "#{player.name} won" if @won
   end
 
   private
+
+  def _game_complete
+    @won || @board_full
+  end
 
   def _play_move(symbol, name)
     print "#{name}, choose a slot(1 to 7): "
