@@ -56,7 +56,7 @@ describe Game do
       allow(@game).to receive(:play_round)
 
       @game.instance_variable_set(:@board_full, true)
-      @game.instance_variable_set(:@won, true)
+
       expect { @game.start_game }
         .to output("Game over\nBoard is full\n").to_stdout
     end
